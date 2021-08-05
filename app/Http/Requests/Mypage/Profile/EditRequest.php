@@ -24,10 +24,15 @@ class EditRequest extends FormRequest
     public function rules()
     {
         return [
+            'avatar' =>[
+                'file',
+                //ファイルが画像（jpeg, png, bmp, gif, svg, webp）であるか検証
+                'image',
+            ],
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
         ];
     }

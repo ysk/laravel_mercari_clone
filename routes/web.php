@@ -23,12 +23,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
+
+Route::middleware('auth')
+      ->group(function () {
+          Route::get('sell', 'SellController@showSellForm')->name('sell');
+      });
+
+
 Route::prefix('mypage')
-    ->namespace('MyPage')
-    ->middleware('auth')
-    ->group(function() {
-        Route::get('edit-profile', 'ProfileController@showProfileEditForm')->name('mypage.edit-profile');
-        Route::post('edit-profile', 'ProfileController@editProfile')->name('mypage.edit-profile');
-    });
+->group(function() {
+    Route::get('edit-profile', 'MyPage\ProfileController@showProfileEditForm')->name('mypage.edit-profile')->middleware('auth');
+    Route::post('edit-profile', 'MyPage\ProfileController@editProfile')->name('mypage.edit-profile')->middleware('auth');
+});
 
 

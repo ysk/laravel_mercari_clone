@@ -21,19 +21,14 @@ class CreateAppTables extends Migration
         Schema::create('secondary_categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('primary_category_id');
-
-            // ここにカラムを追加していく
-
             $table->timestamps();
-
             $table->foreign('primary_category_id')->references('id')->on('primary_categories');
         });
 
         Schema::create('item_conditions', function (Blueprint $table) {
             $table->id();
-
-            // ここにカラムを追加していく
-
+            $table->string('name');
+            $table->integer('sort_no');
             $table->timestamps();
         });
 
@@ -43,11 +38,7 @@ class CreateAppTables extends Migration
             $table->unsignedBigInteger('buyer_id');
             $table->unsignedBigInteger('secondary_category_id');
             $table->unsignedBigInteger('item_condition_id');
-
-            // ここにカラムを追加していく
-
             $table->timestamps();
-
             $table->foreign('seller_id')->references('id')->on('users');
             $table->foreign('buyer_id')->references('id')->on('users');
             $table->foreign('secondary_category_id')->references('id')->on('secondary_categories');
