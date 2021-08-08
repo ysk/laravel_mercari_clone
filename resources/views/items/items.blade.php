@@ -31,7 +31,11 @@
             </div>
         @endforeach
     </div>
+    <div class="d-flex justify-content-center">
+         {{ $items->withQueryString()->links() }}
+    </div>
 </div>
+
 
 <a href="{{route('sell')}}"
    class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
