@@ -13,28 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/home', 'HomeController@index')->name('home');
-
 
 Auth::routes();
 
+//商品一覧・詳細
 Route::get('/', 'ItemsController@showItems')->name('top');
 Route::get('items/{item}', 'ItemsController@showItemDetail')->name('item');
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('items/{item}/buy', function () { return "商品購入画面";})->name('item.buy');
-
+    //出品
     Route::get('sell', 'SellController@showSellForm')->name('sell');
     Route::post('sell', 'SellController@sellItem')->name('sell');
 
-    Route::prefix('mypage')->namespace('MyPage')->group(function() {
+    //購入
+    Route::get('items/{item}/buy', 'ItemsController@showBuyItemForm')->name('item.buy');
 
+    Route::prefix('mypage')->namespace('MyPage')->group(function() {
+        //マイページ
         Route::get('edit-profile', 'ProfileController@showProfileEditForm')->name('mypage.edit-profile');
         Route::post('edit-profile', 'ProfileController@editProfile')->name('mypage.edit-profile');
-
         Route::get('sold-items', 'SoldItemsController@showSoldItems')->name('mypage.sold-items');
-
     });
 });
 
