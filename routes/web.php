@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
 
     //購入
     Route::get('items/{item}/buy', 'ItemsController@showBuyItemForm')->name('item.buy');
+    Route::post('items/{item}/buy', 'ItemsController@buyItem')->name('item.buy');
 
     Route::prefix('mypage')->namespace('MyPage')->group(function() {
         //マイページ

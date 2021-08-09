@@ -47,7 +47,10 @@ class CreateAppTables extends Migration
             $table->text('description');
             $table->unsignedInteger('price');
             $table->string('state');
+            $table->timestamp('bought_at')->nullable();
+
             $table->timestamps();
+
             $table->foreign('seller_id')->references('id')->on('users');
             $table->foreign('buyer_id')->references('id')->on('users');
             $table->foreign('secondary_category_id')->references('id')->on('secondary_categories');

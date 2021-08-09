@@ -28,22 +28,22 @@
                     <div class="card-form-alert alert alert-danger" role="alert" style="display: none"></div>
                     <div class="form-group mt-3">
                         <label for="number-form">カード番号</label>
-                        <div id="number-form" class="form-control"><!-- ここにカード番号入力フォームが生成されます --></div>
+                        <div id="number-form" class="form-control"></div>
                     </div>
                     <div class="form-group mt-3">
                         <label for="expiry-form">有効期限</label>
-                        <div id="expiry-form" class="form-control"><!-- ここに有効期限入力フォームが生成されます --></div>
+                        <div id="expiry-form" class="form-control"></div>
                     </div>
                     <div class="form-group mt-3">
                         <label for="expiry-form">セキュリティコード</label>
-                        <div id="cvc-form" class="form-control"><!-- ここにCVC入力フォームが生成されます --></div>
+                        <div id="cvc-form" class="form-control"></div>
                     </div>
                 </div>
             </div>
 
             <div class="row mt-3 mb-3">
                 <div class="col-8 offset-2">
-                    <button class="btn btn-secondary btn-block">購入</button>
+                    <button class="btn btn-secondary btn-block" onclick="onSubmit(event)">購入</button>
                 </div>
             </div>
 
@@ -55,13 +55,28 @@
     </div>
 </div>
 <script>
-var payjp = Payjp('{{config("payjp.public_key")}}')
-var elements = payjp.elements()
-var numberElement = elements.create('cardNumber')
-var expiryElement = elements.create('cardExpiry')
-var cvcElement = elements.create('cardCvc')
-numberElement.mount('#number-form')
-expiryElement.mount('#expiry-form')
-cvcElement.mount('#cvc-form')
-  </script>
+const payjp    = Payjp('{{config("payjp.public_key")}}');
+const elements = payjp.elements();
+const numberElement = elements.create('cardNumber');
+const expiryElement = elements.create('cardExpiry');
+const cvcElement    = elements.create('cardCvc');
+numberElement.mount('#number-form');
+expiryElement.mount('#expiry-form');
+cvcElement.mount('#cvc-form');
+
+function onSubmit(event) {
+    const msgDom = document.querySelector('.card-form-alert');
+    msgDom.style.display = "none";
+    payjp.createToken(numberElement).then(function(r) {
+    if (r.error) {
+        msgDom.innerText = r.error.message;
+        msgDom.style.display = "block";
+        return;
+    }
+
+    document.querySelector('#card-token').value = r.id;
+    document.querySelector('#buy-form').submit();
+    });
+}
+</script>
 @endsection
